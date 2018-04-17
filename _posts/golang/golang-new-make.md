@@ -2,7 +2,7 @@
 layout: post
 title:  "Golang new make"
 date:   2016-10-15 11:00
-categories: GoLang
+categories: golang
 ---
 
 ## new

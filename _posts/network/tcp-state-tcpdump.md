@@ -2,7 +2,7 @@
 layout: post
 title:  "用过tcpdump观察TCP状态"
 date:   2016-11-07 23:33
-categories: 网络
+categories: network
 ---
 
 # 准备工作：

@@ -2,7 +2,7 @@
 layout: post
 title:  "tcpip 笔记"
 date:   2016-11-22 23:33
-categories: 网络
+categories: network
 ---
 
 # TCPIP 分层

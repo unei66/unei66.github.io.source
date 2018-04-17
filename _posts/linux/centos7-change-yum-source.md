@@ -2,7 +2,7 @@
 layout: post
 title:  "Centos7 更新yum source为163"
 date:   2016-10-27 00:48
-categories: Linux
+categories: linux
 ---
 
 ```

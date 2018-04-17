@@ -2,7 +2,7 @@
 layout: post
 title:  "TCP连接的建立和终止"
 date:   2015-10-31 13:00
-categories: 网络
+categories: network
 ---
 
 ##TCP连接建立

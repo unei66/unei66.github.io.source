@@ -2,7 +2,7 @@
 layout: post
 title:  "GO学习笔记"
 date:   2015-10-31 13:00
-categories: GoLang
+categories: golang
 ---
 
 ## defer

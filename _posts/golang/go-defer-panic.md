@@ -2,7 +2,7 @@
 layout: post
 title:  "golang异常处理"
 date:   2015-10-31 13:00
-categories: GoLang
+categories: golang
 ---
 
 # defer

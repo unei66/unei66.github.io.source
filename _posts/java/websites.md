@@ -2,7 +2,7 @@
 layout: post
 title:  "Java学习站点"
 date:   2016-10-27 15:23
-categories: Java
+categories: java
 ---
 
 ## 网址

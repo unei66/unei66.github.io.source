@@ -2,7 +2,7 @@
 layout: post
 title:  "Centos7内核添加hello world模块"
 date:   2016-10-27 00:29
-categories: Linux
+categories: linux
 ---
 
 ## 下载源码
