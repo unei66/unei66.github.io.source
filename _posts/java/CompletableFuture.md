@@ -90,6 +90,35 @@ supplierA,functionB,functionC 均为耗时操作，如果supplierA执行很快�
                 //在实例中，当supplierA完成后，会调用dep(即stageB)的postComplete,postComplete-->tryFile-->uniApply(或者biApply等方法)-->dep.fn.apply(传入stageA的返回值),同样在stageB执行完，会触发stageC.postComplete
                 d.postComplete();
             }
+
+		}
+    }
+    
+    /**
+     * Pops and tries to trigger all reachable dependents.  Call only
+     * when known to be done.
+     */
+    final void postComplete() {
+        /*
+         * On each step, variable f holds current dependents to pop
+         * and run.  It is extended along only one path at a time,
+         * pushing others to avoid unbounded recursion.
+         */
+        CompletableFuture<?> f = this; Completion h;
+        while ((h = f.stack) != null ||
+               (f != this && (h = (f = this).stack) != null)) {
+            CompletableFuture<?> d; Completion t;
+            if (f.casStack(h, t = h.next)) {
+                if (t != null) {
+                    if (f != this) {
+                        pushStack(h);
+                        continue;
+                    }
+                    h.next = null;    // detach
+                }
+                //tryFire
+                f = (d = h.tryFire(NESTED)) == null ? this : d;
+            }
         }
     }
 ```
@@ -137,4 +166,4 @@ supplierA,functionB,functionC 均为耗时操作，如果supplierA执行很快�
 
    ​
 
-3. ​
+3. ​AsyncSupply.run—>stageA.postComplete—>stageB.tryFire
