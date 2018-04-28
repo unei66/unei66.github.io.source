@@ -34,7 +34,7 @@ Completion stack : treiber stack ，多个操作，例如supplyAsync,thenApplyAs
 
 2. stageB=stageA.thenApplySync(functionB)
 
-   stageA.stack 
+   stageA.stack UniApply
 
    ​	src=stageA
 
@@ -42,7 +42,7 @@ Completion stack : treiber stack ，多个操作，例如supplyAsync,thenApplyAs
 
 3. stageC=stageB.thenApplySync(functionC)
 
-   stageB.stack
+   stageB.stack UniApply
 
    ​	src=stageB
 
@@ -166,4 +166,4 @@ supplierA,functionB,functionC 均为耗时操作，如果supplierA执行很快�
 
    ​
 
-3. ​AsyncSupply.run—>stageA.postComplete—>stageB.tryFire
+3. ​AsyncSupply.run—>stageA.postComplete—>stageB.tryFire—>stageB.uniApply—>stageB.claim(提交到Executor异步处理)
