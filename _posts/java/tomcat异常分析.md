@@ -1,5 +1,5 @@
 ---
-layout: post
+![image-20180427111749446](../../../../../../../../var/folders/6k/jwmpxscs7v52cwyv2p_m4yw00000gn/T/abnerworks.Typora/image-20180427111749446.png)![image-20180427111738909](../../../../../../../../var/folders/6k/jwmpxscs7v52cwyv2p_m4yw00000gn/T/abnerworks.Typora/image-20180427111738909.png)layout: post
 title:  "tomcat异常分析"
 date:   2018-04-26
 categories: java
@@ -15,25 +15,25 @@ categories: java
 
 1. 监控接口请求耗时监控
 
-   ![image003](/Users/sunlei/my/source/blog/source/images/java-tomcat-gc/image003.png)
+   ![image003](../../images/java-tomcat-gc/image003.png)
 
    一个大尖刺 😄
 
 2. 网络监控
 
-   ![image001](/Users/sunlei/my/source/blog/source/images/java-tomcat-gc/image001.png)
+   ![image001](../../images/java-tomcat-gc/image001.png)
 
    这是完全没流量啊
 
 3. cpu监控
 
-   ![image002](/Users/sunlei/my/source/blog/source/images/java-tomcat-gc/image002.png)
+   ![image002](../../images/java-tomcat-gc/image002.png)
 
    呦，还活着！！！
 
 4. jstat
 
-   ![gcutil](/Users/sunlei/my/source/blog/source/images/java-tomcat-gc/gcutil.png)
+   ![gcutil](../../images/java-tomcat-gc/gcutil.png)
 
 
 
