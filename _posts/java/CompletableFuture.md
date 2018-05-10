@@ -144,7 +144,7 @@ supplierA,functionB,functionC 均为耗时操作，如果supplierA执行很快�
            }
            return d;
        }
-
+   
        final void push(UniCompletion<?,?> c) {
            if (c != null) {
                //result==null this.result不为null，即当前CompletableFuture未执行完
@@ -152,7 +152,7 @@ supplierA,functionB,functionC 均为耗时操作，如果supplierA执行很快�
                    lazySetNext(c, null); // clear on failure
            }
        }
-
+   
    	final boolean tryPushStack(Completion c) {
            //当前CompletableFuture的stack，如果	
            //CompletableFuturesupplyAsync().thenApplyAsync,stack=null
@@ -166,4 +166,47 @@ supplierA,functionB,functionC 均为耗时操作，如果supplierA执行很快�
 
    ​
 
-3. ​AsyncSupply.run—>stageA.postComplete—>stageB.tryFire—>stageB.uniApply—>stageB.claim(提交到Executor异步处理)
+3. AsyncSupply.run—>stageA.postComplete—>stageB.tryFire(NEASTED)—>stageB.uniApply—>stageB.claim(提交到Executor异步处理)
+
+   就是将UniApply提交到Executor，Executor调用tryFire(ASYNC)
+
+   —>uniApply(c=null)
+
+   —>completeValue(f.apply(s)) //实际业务代码
+
+   —>postFire
+
+   —>postComplete
+
+   —>同上，每个uniApply依次调用。
+
+   tryFire 不同的参数，不同的逻辑，也是神奇。
+
+```java
+    final <S> boolean uniApply(CompletableFuture<S> a,
+                               Function<? super S,? extends T> f,
+                               UniApply<S,T> c) {
+        Object r; Throwable x;
+        if (a == null || (r = a.result) == null || f == null)
+            return false;
+        tryComplete: if (result == null) {
+            if (r instanceof AltResult) {
+                if ((x = ((AltResult)r).ex) != null) {
+                    completeThrowable(x, r);
+                    break tryComplete;
+                }
+                r = null;
+            }
+            try {
+                if (c != null && !c.claim())
+                    return false;
+                @SuppressWarnings("unchecked") S s = (S) r;
+                completeValue(f.apply(s));
+            } catch (Throwable ex) {
+                completeThrowable(ex);
+            }
+        }
+        return true;
+    }
+```
+
