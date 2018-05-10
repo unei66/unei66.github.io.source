@@ -15,21 +15,23 @@ categories: java
 
 1. 监控接口请求耗时监控
 
-   ![image003](../../images/java-tomcat-gc/image003.png)
+   ![image003](/images/java-tomcat-gc/image003.png)
 
    
 
 2. 网络监控
 
-   ![image001](../../images/java-tomcat-gc/image001.png)
+   ![image001](/images/java-tomcat-gc/image001.png)
 
-   cpu监控
+   
 
-   ![image002](../../images/java-tomcat-gc/image002.png)
+3. cpu监控
 
-3. jstat
+   ![image002](/images/java-tomcat-gc/image002.png)
 
-   ![gcutil](../../images/java-tomcat-gc/gcutil.png)
+4. jstat
+
+   ![gcutil](/images/java-tomcat-gc/gcutil.png)
 
 
 
@@ -131,7 +133,7 @@ CMSScavengeBeforeRemark : CMS前进行一次MinorGC
 
 调整后大约24h ，gc情况：
 
-![gc-after-24h](../../images/java-tomcat-gc/gc-after-24h.png)
+![gc-after-24h](/images/java-tomcat-gc/gc-after-24h.png)
 
 平均一个小时两次fgc，每次的时间不到0.5s，大体上可以接受。
 
@@ -141,37 +143,38 @@ CMSScavengeBeforeRemark : CMS前进行一次MinorGC
 
 1. cms流程
 
-   ```
+
    2018-04-28T15:48:13.167+0800: 1341.458: [GC (CMS Initial Mark) [1 CMS-initial-mark: 4076417K(5242880K)] 4093238K(7130368K), 0.0064435 secs] [Times: user=0.01 sys=0.00, real=0.01 secs]
-   
+
    2018-04-28T15:48:13.173+0800: 1341.465: [CMS-concurrent-mark-start]
    2018-04-28T15:48:13.416+0800: 1341.708: [CMS-concurrent-mark: 0.240/0.243 secs] [Times: user=0.88 sys=0.07, real=0.24 secs]
-   
+
    2018-04-28T15:48:13.416+0800: 1341.708: [CMS-concurrent-preclean-start]
-   
+
    2018-04-28T15:48:13.436+0800: 1341.728: [CMS-concurrent-preclean: 0.019/0.020 secs] [Times: user=0.07 sys=0.00, real=0.02 secs]
-   
+
    2018-04-28T15:48:13.436+0800: 1341.728: [CMS-concurrent-abortable-preclean-start]
-   
+
    2018-04-28T15:48:15.145+0800: 1343.437: [GC (Allocation Failure) 1343.437: [ParNew: 1693259K->189383K(1887488K), 0.3191849 secs] 5769676K->4265801K(7130368K), 0.3194583 secs] [Times: user=0.40 sys=0.00, real=0.32 secs]
-   
+
    2018-04-28T15:48:17.424+0800: 1345.716: [CMS-concurrent-abortable-preclean: 2.845/3.988 secs] [Times: user=10.56 sys=0.64, real=3.99 secs]
-   
+
    2018-04-28T15:48:17.427+0800: 1345.719: [GC (CMS Final Remark) [YG occupancy: 1685779 K (1887488 K)]1345.719: [Rescan (parallel) , 0.3523662 secs]1346.071: [weak refs processing, 0.3003263 secs]1346.372: [class unloading, 0.1228579 secs]1346.495: [scrub symbol table, 0.0134209 secs]1346.508: [scrub string table, 0.0023638 secs][1 CMS-remark: 4076417K(5242880K)] 5762197K(7130368K), 0.7958359 secs] [Times: user=1.85 sys=0.00, real=0.80 secs]
-   
+
    2018-04-28T15:48:18.238+0800: 1346.530: [CMS-concurrent-sweep-start]
-   
+
    2018-04-28T15:48:18.419+0800: 1346.711: [GC (Allocation Failure) 1346.711: [ParNew: 1867207K->199251K(1887488K), 0.3801573 secs] 5812075K->4163268K(7130368K), 0.3804263 secs] [Times: user=0.52 sys=0.00, real=0.38 secs]
-   
+
    2018-04-28T15:48:20.851+0800: 1349.143: [GC (Allocation Failure) 1349.143: [ParNew: 1877075K->159618K(1887488K), 0.2674537 secs] 3508407K->1803795K(7130368K), 0.2677172 secs] [Times: user=0.35 sys=0.00, real=0.27 secs]
-   
+
    2018-04-28T15:48:22.040+0800: 1350.331: [CMS-concurrent-sweep: 3.127/3.801 secs] [Times: user=11.04 sys=0.50, real=3.80secs]
-   
+
    2018-04-28T15:48:22.040+0800: 1350.331: [CMS-concurrent-reset-start]
    2018-04-28T15:48:22.051+0800: 1350.343: [CMS-concurrent-reset: 0.011/0.011 secs] [Times: user=0.04 sys=0.00, real=0.01secs]
-   
+
    2018-04-28T15:48:22.683+0800: 1350.975: [GC (Allocation Failure) 1350.975: [ParNew: 1837442K->204471K(1887488K),0.4063115 secs] 2327686K->697104K(7130368K), 0.4065654 secs] [Times: user=0.47 sys=0.00, real=0.40 secs]
-   ```
+
+   
 
    + CMS Initial Mark 
 
@@ -195,13 +198,17 @@ CMSScavengeBeforeRemark : CMS前进行一次MinorGC
 
    + 分析一下CMS-concurrent-sweep-start 以后的几次ParNew：
 
+     
+
      | 次数 | young size before MinorGC | young size after MinorGC | heap size before MinorGC | heap size after MinorGC |
      | ---- | ------------------------- | ------------------------ | ------------------------ | ----------------------- |
      | 1    | 1867207K                  | 199251K                  | 5812075K                 | 4163268K                |
      | 2    | 1877075K                  | 159618K                  | 3508407K                 | 1803795K                |
      | 3    | 1837442K                  | 204471K                  | 2327686K                 | 697104K                 |
 
-     从表格中计算，cms前后，old size：从4163268K-199251K  大约将为697104K-204471K。
+     
+
+​     从表格中计算，cms前后，old size：从4163268K-199251K  大约将为697104K-204471K。
 
 2. cms参数调整怎么算优秀？
 
@@ -233,7 +240,7 @@ CMSScavengeBeforeRemark : CMS前进行一次MinorGC
 
 
 
-
+参考资料：
 
 http://itindex.net/detail/47030-cms-gc-%E9%97%AE%E9%A2%98
 
