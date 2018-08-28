@@ -1,4 +1,10 @@
-###  判断对象是否存活
+### heap
+
+![java-heap](../../images/java/java-heap.png)
+
+
+
+### 判断对象是否存活
 
 1. 引用计数法 Reference Counting
 
@@ -29,5 +35,9 @@
 
 
 
+### 垃圾收集器
 
+![](../../images/java/gc-collector.png)
 
++ Serial,ParNew,ParallelScavenge 复制算法
++ Serial old 标记整理算法

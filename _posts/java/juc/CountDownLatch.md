@@ -39,11 +39,11 @@ categories: java
 
    await—>AQS.acquireSharedInterruptibly(1)
 
-   ​		—>Sync.tryAcquireShared(1)
+   		—>Sync.tryAcquireShared(1)
 
-   ​		—>AQS.doAcquireSharedInterruptibly(1)
+   		—>AQS.doAcquireSharedInterruptibly(1)
 
-   ​
+
 
    ```
    private void doAcquireSharedInterruptibly(int arg)
@@ -78,13 +78,26 @@ categories: java
        }
    ```
 
-   例如：
+   addWaiter
 
-   ​	CLH  head--node1—node2—node3—node4=tail
+   ```java
+   private Node addWaiter(Node mode) {
+           Node node = new Node(Thread.currentThread(), mode);
+           // Try the fast path of enq; backup to full enq on failure
+           Node pred = tail;
+           if (pred != null) {
+               node.prev = pred;
+               if (compareAndSetTail(pred, node)) {
+                   pred.next = node;
+                   return node;
+               }
+           }
+           enq(node);
+           return node;
+       }
+   ```
 
-   ​
 
-   ​	每个节点都会一直判断前面的node是否为head，然后判断是否tryAcquireShared(arg)>=0，当返回值>=0,方法就可以返回了，否则一直循环判断，即wait。
 
    ​
 
@@ -93,5 +106,5 @@ categories: java
 
 AQS.releaseShared(1)—>Sync.tryReleasedShared(1) 计数减1
 
-​				—>AQS.doReleasedShare()
+				—>AQS.doReleasedShare()
 
